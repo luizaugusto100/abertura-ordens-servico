@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import br.com.ordensservico.aberturaordensservico.model.setor;
+import br.com.ordensservico.aberturaordensservico.model.Setor;
 import br.com.ordensservico.aberturaordensservico.repository.SetorRepository;
 
 @Service 
@@ -16,20 +16,27 @@ public class SetorService {
         this.setorRepository = setorRepository;
     }
 
-    public setor cadastrarSetor(setor setor) {
+    public Setor cadastrarSetor(Setor setor) {
         return setorRepository.save(setor);
     }
 
-    public List<setor> listarSetores() {
+    public List<Setor> listarSetores() {
         return setorRepository.findAll();
     }
 
-    public setor buscarSetorPorId(Integer id) {
+    public Setor buscarSetorPorId(Integer id) {
         return setorRepository.findById(id).orElse(null);
     }
 
-    public setor atualizarSetor(setor setor) {
-        return setorRepository.save(setor);
+    public Setor atualizarSetor(Integer id, Setor setornovoSetor) {
+        java.util.Optional<Setor> setorEncontrado = setorRepository.findById(id);
+        if (!setorEncontrado.isPresent()) {
+            return null;
+        }
+
+        Setor setor2 = setorEncontrado.get();
+        setor2.setNome(setornovoSetor.getNome());
+        return setorRepository.save(setor2);
     }
 
     public void deletarSetor(Integer id) {

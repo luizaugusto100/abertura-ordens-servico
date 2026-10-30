@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.ordensservico.aberturaordensservico.model.setor;
+import br.com.ordensservico.aberturaordensservico.model.Setor;
 import br.com.ordensservico.aberturaordensservico.service.SetorService;
 
 @RestController 
@@ -25,26 +25,26 @@ public class SetorController {
     }
 
     @PostMapping 
-    public ResponseEntity<setor> cadastrarSetor(@RequestBody setor setor) {
-        setor novoSetor = setorService.cadastrarSetor(setor);
+    public ResponseEntity<Setor> cadastrarSetor(@RequestBody Setor setor) {
+        Setor novoSetor = setorService.cadastrarSetor(setor);
         return ResponseEntity.status(HttpStatus.CREATED).body(novoSetor);
     }
 
     @GetMapping 
-    public ResponseEntity<java.util.List<setor>> listarSetores() {
-        java.util.List<setor> setores = setorService.listarSetores();
+    public ResponseEntity<java.util.List<Setor>> listarSetores() {
+        java.util.List<Setor> setores = setorService.listarSetores();
         return ResponseEntity.ok(setores);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<setor> buscarSetorPorId(@PathVariable Integer id) {
-        setor setor = setorService.buscarSetorPorId(id);
+    public ResponseEntity<Setor> buscarSetorPorId(@PathVariable Integer id) {
+        Setor setor = setorService.buscarSetorPorId(id);
         return ResponseEntity.ok(setor);
     }
 
     @PutMapping ("/{id}")
-    public ResponseEntity<setor> atualizar(@PathVariable Integer id, @RequestBody setor setor) {
-        setor setorAtualizado = setorService.atualizarSetor(id, setor);
+    public ResponseEntity<Setor> atualizarSetor(@PathVariable Integer id, @RequestBody Setor setor) {
+        Setor setorAtualizado = setorService.atualizarSetor(id, setor);
         return ResponseEntity.ok(setorAtualizado);
     }
 
