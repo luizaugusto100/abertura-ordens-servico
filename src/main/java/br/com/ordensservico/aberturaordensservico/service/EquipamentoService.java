@@ -5,15 +5,17 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import br.com.ordensservico.aberturaordensservico.model.Equipamento;
-import br.com.ordensservico.aberturaordensservico.model.Setor;
+import br.com.ordensservico.aberturaordensservico.model.Equipamento; 
 import br.com.ordensservico.aberturaordensservico.repository.EquipamentoRepository;
 import br.com.ordensservico.aberturaordensservico.repository.SetorRepository;
+import jakarta.validation.constraints.NotNull;
+
 
 @Service 
 public class EquipamentoService {
 
     private final EquipamentoRepository equipamentoRepository;
+    
     private final SetorRepository setorRepository;
 
     public EquipamentoService (EquipamentoRepository equipamentoRepository, SetorRepository setorRepository){

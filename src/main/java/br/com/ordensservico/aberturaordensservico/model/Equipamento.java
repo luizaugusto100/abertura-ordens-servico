@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "equipamentos")
@@ -17,12 +19,18 @@ public class Equipamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotBlank (message = "O nome do equipamento é obrigatório")
+    @NotNull (message = "O nome do equipamento não pode ser nulo")
     private String nome;
 
+    @NotBlank (message = "O número de patrimônio é obrigatório")
+    @NotNull (message = "O número de patrimônio não pode ser nulo")
+    
     private String numeroPatrimonio;
 
     @ManyToOne
     @JoinColumn (name = "setor_id", nullable = false)
+    @NotNull (message = "O setor não pode ser nulo")
     private Setor setor;
 
     public Equipamento() {

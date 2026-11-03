@@ -5,16 +5,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
     @Entity 
     @Table(name = "setor")
-
 public class Setor {
 
     @Id 
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotBlank (message = "O nome do setor é obrigatório")
+    @NotNull (message = "O nome do setor não pode ser nulo")
+    
     private String nome;
 
     public int getId() {
