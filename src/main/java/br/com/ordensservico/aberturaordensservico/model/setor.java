@@ -18,7 +18,6 @@ public class Setor {
 
     @NotBlank (message = "O nome do setor é obrigatório")
     @NotNull (message = "O nome do setor não pode ser nulo")
-    
     private String nome;
 
     public int getId() {

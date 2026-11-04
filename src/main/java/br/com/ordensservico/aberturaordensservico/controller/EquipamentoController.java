@@ -22,40 +22,55 @@ public class EquipamentoController {
     }
 
     @PostMapping
-    public ResponseEntity<Equipamento> cadastrar(@Valid @RequestBody Equipamento equipamento) {
+    public ResponseEntity<Equipamento> cadastrar(
+            @Valid @RequestBody Equipamento equipamento) {
 
-        Equipamento equipamentoCadastrado =
-                equipamentoService.cadastrarEquipamento(equipamento);
+        Integer setorId = equipamento.getSetor().getId();
+
+        Optional<Equipamento> equipamentoCadastrado = equipamentoService.cadastrar(setorId, equipamento);
+
+        if (equipamentoCadastrado.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(equipamentoCadastrado);
+                .body(equipamentoCadastrado.get());
     }
 
     @GetMapping
     public ResponseEntity<List<Equipamento>> listar() {
         return ResponseEntity.ok(
-                equipamentoService.listarEquipamentos()
-        );
+                equipamentoService.listarEquipamentos());
     }
 
-    @GetMapping ("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Equipamento> buscarEquipamentoPorId(
-        @PathVariable Integer id){
-            Optional<Equipamento> equipamento = equipamentoService.buscarEquipamentoPorId(id);
-        
-        return ResponseEntity.ok(equipamento.get());
-        }
+            @PathVariable Integer id) {
+        Optional<Equipamento> equipamento = equipamentoService.buscarEquipamentoPorId(id);
 
-    @PutMapping ("/{id}")
-    public ResponseEntity<Equipamento> atualizarEquipamento(@PathVariable Integer id, @Valid @RequestBody Equipamento equipamento) {
+        return ResponseEntity.ok(equipamento.get());
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Equipamento> atualizarEquipamento(@PathVariable Integer id,
+            @Valid @RequestBody Equipamento equipamento) {
         Equipamento equipamentoAtualizado = equipamentoService.atualizarEquipamento(id, equipamento);
         return ResponseEntity.ok(equipamentoAtualizado);
     }
 
-    @DeleteMapping ("/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletarEquipamento(@PathVariable Integer id) {
         equipamentoService.deletarEquipamento(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public class SetorNaoEncontradoException
+            extends RuntimeException {
+
+        public SetorNaoEncontradoException() {
+            super("Setor não encontrado!");
+        }
     }
 
 }
