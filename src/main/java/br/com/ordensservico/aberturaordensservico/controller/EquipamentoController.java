@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import br.com.ordensservico.aberturaordensservico.dto.EquipamentoRequest;
 import br.com.ordensservico.aberturaordensservico.model.Equipamento;
 import br.com.ordensservico.aberturaordensservico.service.EquipamentoService;
 import jakarta.validation.Valid;
@@ -23,11 +24,9 @@ public class EquipamentoController {
 
     @PostMapping
     public ResponseEntity<Equipamento> cadastrar(
-            @Valid @RequestBody Equipamento equipamento) {
+            @Valid @RequestBody EquipamentoRequest equipamento) {
 
-        Integer setorId = equipamento.getSetor().getId();
-
-        Optional<Equipamento> equipamentoCadastrado = equipamentoService.cadastrar(setorId, equipamento);
+        Optional<Equipamento> equipamentoCadastrado = equipamentoService.cadastrar(equipamento);
 
         if (equipamentoCadastrado.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -52,10 +51,18 @@ public class EquipamentoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Equipamento> atualizarEquipamento(@PathVariable Integer id,
-            @Valid @RequestBody Equipamento equipamento) {
-        Equipamento equipamentoAtualizado = equipamentoService.atualizarEquipamento(id, equipamento);
-        return ResponseEntity.ok(equipamentoAtualizado);
+    public ResponseEntity<Optional<Equipamento>> atualizarEquipamento(@PathVariable Integer id,
+            @Valid @RequestBody EquipamentoRequest equipamento) {
+
+        Optional<Equipamento> equipamentoAtualizado = equipamentoService.atualizarEquipamento(id, equipamento);
+
+        if (equipamentoAtualizado.isPresent()) {
+
+            return ResponseEntity.ok(equipamentoAtualizado);
+        }
+
+        return ResponseEntity.notFound().build();
+
     }
 
     @DeleteMapping("/{id}")

@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import br.com.ordensservico.aberturaordensservico.dto.EquipamentoRequest;
 import br.com.ordensservico.aberturaordensservico.model.Equipamento;
 import br.com.ordensservico.aberturaordensservico.model.Setor;
 import br.com.ordensservico.aberturaordensservico.repository.EquipamentoRepository;
@@ -23,19 +24,22 @@ public class EquipamentoService {
         this.setorRepository = setorRepository;
     }
 
-    public Optional<Equipamento> cadastrar(Integer setorId, Equipamento equipamento) {
+    public Optional<Equipamento> cadastrar( EquipamentoRequest equipamento) {
 
     Optional<Setor> setorEncontrado =
-            setorRepository.findById(setorId);
+            setorRepository.findById(equipamento.getSetorId());
 
     if (setorEncontrado.isEmpty()) {
         return Optional.empty();
     }
+    Equipamento equipamento2 = new Equipamento();
+    equipamento2.setSetor(setorEncontrado.get());
+    equipamento2.setNome(equipamento.getNome());
+    equipamento2.setNumeroPatrimonio(equipamento.getNumeroPatrimonio());
 
-    equipamento.setSetor(setorEncontrado.get());
+    return Optional.of(equipamentoRepository.save(equipamento2));
+    }
 
-    return Optional.of(equipamentoRepository.save(equipamento));
-}
 
     public List<Equipamento> listarEquipamentos() {
         return equipamentoRepository.findAll();
@@ -45,19 +49,28 @@ public class EquipamentoService {
         return equipamentoRepository.findById(id);
     }
 
-    public Equipamento atualizarEquipamento(Integer id, Equipamento equipamentonovoequipamento) {
+    public Optional<Equipamento> atualizarEquipamento(Integer id, EquipamentoRequest equipamentonovoequipamento) {
         
         Optional<Equipamento> EquipamentoEncontrado = equipamentoRepository.findById(id);
         
         if (!EquipamentoEncontrado.isPresent()) {
-            return null;
+            return Optional.empty();
         }
 
+        Optional<Setor> setorEncontrado = setorRepository.findById(equipamentonovoequipamento.getSetorId());
+        if (setorEncontrado.isEmpty()) {
+            return Optional.empty();
+        }
+            
+        
+
         Equipamento equipamento2 = EquipamentoEncontrado.get();
+
         equipamento2.setNome(equipamentonovoequipamento.getNome());
         equipamento2.setNumeroPatrimonio(equipamentonovoequipamento.getNumeroPatrimonio());
-        equipamento2.setSetor(equipamentonovoequipamento.getSetor());
-        return equipamentoRepository.save(equipamento2);
+        equipamento2.setSetor(setorEncontrado.get());
+            
+        return Optional.of(equipamentoRepository.save(equipamento2));
     }
 
     public void deletarEquipamento(Integer id) {
