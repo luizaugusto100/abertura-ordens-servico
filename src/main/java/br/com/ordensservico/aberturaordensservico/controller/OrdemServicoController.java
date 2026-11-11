@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.ordensservico.aberturaordensservico.dto.OrdemServicoRequest;
 import br.com.ordensservico.aberturaordensservico.model.OrdemServico;
 import br.com.ordensservico.aberturaordensservico.service.OrdemServicoService;
+import jakarta.validation.Valid;
 
 @RestController 
 @RequestMapping ("/ordem_servico")
@@ -28,7 +29,7 @@ public class OrdemServicoController {
     }
 
     @PostMapping 
-    public ResponseEntity<Optional<OrdemServico>> cadastrarOrdemServico(@RequestBody OrdemServicoRequest ordemServico) {
+    public ResponseEntity<Optional<OrdemServico>> cadastrarOrdemServico(@Valid @RequestBody OrdemServicoRequest ordemServico) {
         Optional<OrdemServico> ordemServicoCadastrada = ordemServicoService.cadastrar(ordemServico);
 
         if (ordemServicoCadastrada.isEmpty()) {
