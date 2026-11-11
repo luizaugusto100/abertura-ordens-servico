@@ -11,7 +11,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table (name = "ordem_servico")
+@Table (name = "ordens-servico")
 public class OrdemServico {
 
     @Id 
@@ -21,6 +21,10 @@ public class OrdemServico {
     private String descricao;
 
     private LocalDateTime dataAbertura;
+
+    private LocalDateTime dataEncerramento;
+
+    private String solucao;
 
     @ManyToOne 
     @JoinColumn (name = "equipamento_id")
@@ -57,5 +61,23 @@ public class OrdemServico {
     public void setEquipamento(Equipamento equipamento) {
         this.equipamento = equipamento;
     }
+
+    public LocalDateTime getDataEncerramento() {
+        return dataEncerramento;
+    }
+
+    public void setDataEncerramento(LocalDateTime dataEncerramento) {
+          this.dataEncerramento = dataEncerramento;
+    }
+
+    public String getSolucao() {
+        return solucao;
+    }
+
+    public void setSolucao(String solucao) {
+        this.solucao = solucao;
+    }
+
+    
 
 }
