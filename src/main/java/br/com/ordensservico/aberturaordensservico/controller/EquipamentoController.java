@@ -46,6 +46,9 @@ public class EquipamentoController {
     public ResponseEntity<Equipamento> buscarEquipamentoPorId(
             @PathVariable Integer id) {
         Optional<Equipamento> equipamento = equipamentoService.buscarEquipamentoPorId(id);
+            if (equipamento.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
 
         return ResponseEntity.ok(equipamento.get());
     }

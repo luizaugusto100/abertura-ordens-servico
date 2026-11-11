@@ -1,6 +1,7 @@
 package br.com.ordensservico.aberturaordensservico.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,8 @@ public class SetorService {
         return setorRepository.findAll();
     }
 
-    public Setor buscarSetorPorId(Integer id) {
-        return setorRepository.findById(id).orElse(null);
+    public Optional<Setor> buscarSetorPorId(Integer id) {
+        return setorRepository.findById(id);
     }
 
     public Setor atualizarSetor(Integer id, Setor setornovoSetor) {

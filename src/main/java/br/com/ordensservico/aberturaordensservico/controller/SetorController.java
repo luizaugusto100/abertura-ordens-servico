@@ -1,5 +1,7 @@
 package br.com.ordensservico.aberturaordensservico.controller;
 
+import java.util.Optional;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,8 +42,11 @@ public class SetorController {
 
     @GetMapping("/{id}")
     public ResponseEntity<Setor> buscarSetorPorId(@PathVariable Integer id) {
-        Setor setor = setorService.buscarSetorPorId(id);
-        return ResponseEntity.ok(setor);
+        Optional<Setor> setor = setorService.buscarSetorPorId(id);
+        if (setor.isPresent()){
+            return ResponseEntity.ok(setor.get());
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @PutMapping ("/{id}")
